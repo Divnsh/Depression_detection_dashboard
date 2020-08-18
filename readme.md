@@ -1,8 +1,8 @@
-# Depression_prediction_dashboard
+# Depression_detection_dashboard
 **Dashboard for depression detection through text.**
 Deployed on Heroku: http://depression-check.herokuapp.com/
 
-![Depression-check](./assets/Screenshot from 2020-08-18 17-44-54.png)
+![Depression-check](https://github.com/Divnsh/Depression_detection_dashboard/tree/master/assets/Screenshot.png)
 
 *Data used to train the model-*
 
