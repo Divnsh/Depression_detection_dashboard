@@ -1,6 +1,6 @@
 # Depression_detection_dashboard
 **Dashboard for depression detection through text.**
-Deployed on Heroku: http://depression-check.herokuapp.com/
+Deployed on Heroku: https://depression-check.herokuapp.com/
 
 ![Depression-check](/assets/Screenshot.png)
 
