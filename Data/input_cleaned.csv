@@ -1,2 +1,4 @@
 Text,cleaned_text,stemmed_text,lemmatized_text,treated_stemmed_text,treated_lemmatized_text
-😕 Sorry for the inconvenience. GPU unavailable. Try another time.,confused_face sorry for the inconvenience . gnu unavailable . try another time .,confused face sorry inconvenience gnu unavailable try another time,confused face sorry inconvenience gnu unavailable try another time,confused face sorry inconvenience gnu unavailable try another time,confused face sorry inconvenience gnu unavailable try another time
+"You can also provide a csv file with text data.
+                
+Fetching results may take 10-20 seconds. Please be patient.",you can also provide a csc file with text data . fetching results may take 10-20 seconds . please be patient .,also provide csc file text data fetching results may take seconds please patient,also provide csc file text data fetching results may take seconds please patient,also provide csc file text data fetching results may take seconds please patient,also provide csc file text data fetching results may take seconds please patient

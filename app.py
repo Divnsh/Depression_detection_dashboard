@@ -27,6 +27,7 @@ assert os.path.exists(PLOTS_DIR) and os.path.exists(DATA_DIR), "Plots or data no
 #external_stylesheets=['https://codepen.io/amyoshino/pen/jzXypZ.css']
 external_stylesheets=['/assets/amyoshinopen.css']
 app = dash.Dash(__name__, title = 'Depression detection', external_stylesheets=external_stylesheets)
+server = app.server
 
 colors = {
     'background': '#111111',
@@ -274,7 +275,6 @@ def parse_contents(contents, filename):
     [State('upload_data', 'contents')]
 )
 def fetch_results_csv(filename,contents):
-    print("----------------TRIGGERED-----------------")
     if contents is not None and filename is not None:
         fileList = glob.glob(os.path.join(DATA_DIR, 'result*.csv'))
         for f in fileList:
@@ -287,6 +287,7 @@ def fetch_results_csv(filename,contents):
         for fname,data in zip(filename,contents):
             try:
                 df=parse_contents(data, fname)
+                print(df)
                 if df==["GPU unavailable"]:
                     return '😕 Sorry for the inconvenience. GPU unavailable. Try another time.'
             except Exception as e:

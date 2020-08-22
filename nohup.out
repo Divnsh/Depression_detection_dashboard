@@ -30,3 +30,28 @@ To enable them in other operations, rebuild TensorFlow with the appropriate comp
 2020-08-22 20:43:24.644439: I tensorflow_serving/model_servers/server.cc:367] Running gRPC ModelServer at 0.0.0.0:8500 ...
 [evhttp_server.cc : 238] NET_LOG: Entering the event loop ...
 2020-08-22 20:43:24.650413: I tensorflow_serving/model_servers/server.cc:387] Exporting HTTP/REST API at:localhost:8501 ...
+2020-08-22 20:57:45.420708: W external/org_tensorflow/tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 4086300672 exceeds 10% of free system memory.
+2020-08-22 20:57:45.436090: W external/org_tensorflow/tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 4086300672 exceeds 10% of free system memory.
+2020-08-22 20:57:45.938543: W external/org_tensorflow/tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 4086300672 exceeds 10% of free system memory.
+2020-08-22 21:09:28.343716: I tensorflow_serving/model_servers/server.cc:87] Building single TensorFlow model file config:  model_name: roberta_dep model_base_path: gs://saved_models19082020/my_models
+2020-08-22 21:09:28.343954: I tensorflow_serving/model_servers/server_core.cc:464] Adding/updating models.
+2020-08-22 21:09:28.343987: I tensorflow_serving/model_servers/server_core.cc:575]  (Re-)adding model: roberta_dep
+2020-08-22 21:09:38.301425: I tensorflow_serving/core/basic_manager.cc:739] Successfully reserved resources to load servable {name: roberta_dep version: 1}
+2020-08-22 21:09:38.301520: I tensorflow_serving/core/loader_harness.cc:66] Approving load for servable version {name: roberta_dep version: 1}
+2020-08-22 21:09:38.301566: I tensorflow_serving/core/loader_harness.cc:74] Loading servable version {name: roberta_dep version: 1}
+2020-08-22 21:09:39.718543: I external/org_tensorflow/tensorflow/cc/saved_model/reader.cc:31] Reading SavedModel from: gs://saved_models19082020/my_models/1
+2020-08-22 21:09:43.291734: I external/org_tensorflow/tensorflow/cc/saved_model/reader.cc:54] Reading meta graph with tags { serve }
+2020-08-22 21:09:43.291865: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:234] Reading SavedModel debug info (if present) from: gs://saved_models19082020/my_models/1
+2020-08-22 21:09:43.901407: I external/org_tensorflow/tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2020-08-22 21:09:44.178166: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:199] Restoring SavedModel bundle.
+2020-08-22 21:22:13.484676: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:183] Running initialization op on SavedModel bundle at path: gs://saved_models19082020/my_models/1
+2020-08-22 21:22:13.828640: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:303] SavedModel load for tags { serve }; Status: success: OK. Took 754110106 microseconds.
+2020-08-22 21:22:14.511510: I tensorflow_serving/servables/tensorflow/saved_model_warmup_util.cc:59] No warmup data file found at gs://saved_models19082020/my_models/1/assets.extra/tf_serving_warmup_requests
+2020-08-22 21:22:21.307537: I tensorflow_serving/core/loader_harness.cc:87] Successfully loaded servable version {name: roberta_dep version: 1}
+2020-08-22 21:22:21.314780: I tensorflow_serving/model_servers/server.cc:367] Running gRPC ModelServer at 0.0.0.0:8500 ...
+2020-08-22 21:22:21.318409: I tensorflow_serving/model_servers/server.cc:387] Exporting HTTP/REST API at:localhost:8501 ...
+[evhttp_server.cc : 238] NET_LOG: Entering the event loop ...
+2020-08-22 22:09:58.208988: W external/org_tensorflow/tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 4086300672 exceeds 10% of free system memory.
+2020-08-22 22:09:58.209889: W external/org_tensorflow/tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 4086300672 exceeds 10% of free system memory.
+2020-08-22 22:09:58.215556: W external/org_tensorflow/tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 4086300672 exceeds 10% of free system memory.
