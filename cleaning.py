@@ -406,6 +406,7 @@ if __name__=='__main__':
     print('Memory Usage = {:.2f} MB'.format(postsdf.memory_usage().sum() / 1024 ** 2))
 
     #client = Client()
+    postsdf['idx']=list(range(0,len(postsdf)))
     cleaned=Cleaning(postsdf)
     cleaned=cleaned.drop_duplicates().dropna()
     cleaned.to_csv(os.path.join(DATA_DIR, "cleaned_reddit.csv"), header=True, index=False, encoding='utf-8', quoting=csv.QUOTE_NONNUMERIC)

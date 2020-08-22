@@ -10,9 +10,15 @@ import pandas as pd
 #import pyldavis_dash
 import plotly.graph_objects as go
 from dash.dependencies import Input, Output, State
-from roBERTamodel import Model
+from roBERTamodel import Model,deploy_tfserving
 from more_exploration import format_topics_inputs
 import pickle
+import base64
+import io
+import datetime
+import dash_table
+from urllib.parse import quote as urlquote
+import glob
 
 PLOTS_DIR='./Plots'
 DATA_DIR='./Data'
@@ -53,21 +59,27 @@ app.layout = html.Div(style={'background-image': 'url("/assets/stigma-depression
 
             html.Div(children='See if your text indicates signs of depression.',
                         style={
-                                'textAlign': 'center',
+                                'textAlign': 'left',
                                 'color': colors['Mellow Apricot'],
-                                'fontSize': "18"
+                                'fontSize': 18,
+                                'margin-left':5
                             }
-                    , className = 'twelve columns')
+                    , className = 'eight columns'),
+
+            html.Button('Reset', id='reset_button', n_clicks=0, style={'height':"50px", 'width':"200px",
+                                                                       'float':"right",
+                                                                       'color':"white"}, className = 'five columns')
+
             ],className = 'row'),
         html.Br(),
         html.Br(),
         html.Div([
             html.Div([
                 html.P("Major depression topics from subreddits:",
-                        style={ 'textAlign': 'left',
+                        style={ 'textAlign': 'center',
                                 'color': colors['jellybean'],
-                                 'font-weight': 'bold'
-                            }),
+                                 'font-weight': 'bold',
+                            },className='ten columns'),
                  #pyldavis_dash.pyLDAvis(id='lda_graph', data=myvars)
                 #dash_dangerously_set_inner_html
                 html.Iframe(src=app.get_asset_url('lda.html'),
@@ -80,9 +92,8 @@ app.layout = html.Div(style={'background-image': 'url("/assets/stigma-depression
                                 'color': colors['jellybean'],
                                 'font-weight': 'bold'
                             }),
-                dcc.Textarea(id="topics_out",value='You will see relevant topics here once you enter your text below.\n\
-                                                   \nFetching results may take 10-20 seconds. Please be patient.',
-                             style={'whiteSpace':'pre-line','height':"600px",'width':"100%",'text-align': "justify"}),
+                dcc.Textarea(id="topics_out", style={'whiteSpace':'pre-line','height':"600px",'width':"100%",
+                                                     'text-align': "justify"}),
                 html.Img(id='result_image', style={'width':"100%",'height':"300px"})
 
             ],className='two columns')
@@ -94,12 +105,36 @@ app.layout = html.Div(style={'background-image': 'url("/assets/stigma-depression
                                             'font-weight': 'bold','background-color': 'rgba(255, 255, 255, 0.95)'}),
                 dcc.Textarea(id = "input_text", placeholder="Enter your text here.", style={'width':"100%",
                                                                                             'height':"230px"}),
-                html.Button('Go', id='input_text_button', n_clicks=0, style={'color':colors['text'],
-                                                                             'width':"600px",
-                                                                             'height':"50px",'float':"right",
-                                                                             'position':'sticky'})
-            ], className='eight columns'),
 
+                html.Div([
+                    html.Button('Go', id='input_text_button', n_clicks=0, style={'color':colors['text'],
+                                                                                 'height':"50px",
+                                                                                 'width':"400px",
+                                                                                 'float':"right",
+                                                                                 'position':'sticky'},
+                                ),
+                    dcc.Upload(
+                            id='upload_data',
+                            children=html.Div([
+                                'Drag and Drop or ',
+                                html.A('Select Files')
+                            ]),
+                            style={
+                                'width': '100%',
+                                'height': '50px',
+                                'lineHeight': '50px',
+                                'borderWidth': '1px',
+                                'borderStyle': 'dashed',
+                                'borderRadius': '2px',
+                                'textAlign': 'center',
+                                'margin': '10px',
+                                'color' : 'white',
+                                'float':"left",
+                                'width':"400px"
+                            }, multiple=True),
+                    html.Ul(id="output_results",style={'color':"white"}),
+                ], className='row')
+            ], className='eight columns'),
             html.Div([
                 #html.P("Probability of depression: ", style={'color':colors['Moss Green'],'textAlign':"center"}),
                 dcc.Graph(id="Indicator",style={'width':"100%","height":"300px"})
@@ -108,6 +143,7 @@ app.layout = html.Div(style={'background-image': 'url("/assets/stigma-depression
 
 ], className='twelve columns')
 
+deploy_tfserving()
 roberta=Model()
 
 @app.callback(
@@ -170,6 +206,10 @@ def get_topics(src):
         except:
             outtext="\U0001F610 You may try entering a longer text."
         return outtext
+    else:
+        return "You will see relevant topics here once you enter your text below.\n\
+                \nYou can also provide a csv file with text data.\n\
+                \nFetching results may take 10-20 seconds. Please be patient."
 
 
 @app.callback(
@@ -211,6 +251,58 @@ def set_prediction(src):
            }))
     fig_prob.update_layout(paper_bgcolor='rgba(230, 230, 230, 0.95)')
     return fig_prob
+
+def parse_contents(contents, filename):
+    content_type, content_string = contents.split(',')
+
+    decoded = base64.b64decode(content_string)
+    if 'csv' in filename:
+        df = pd.read_csv(
+            io.StringIO(decoded.decode('utf-8')), names=['Text'])
+        print(df.head())
+    elif 'xls' in filename or 'xlsx' in filename:
+        df = pd.read_excel(io.BytesIO(decoded), names=['Text'])
+    df['idx']=list(range(0,len(df)))
+    df1=Cleaning(df,0)
+    df1 = roberta.get_prediction_bulk(df1)
+    df1 = df1.merge(df,on='idx',how='right')
+    return df1
+
+@app.callback(
+    Output('output_results', 'children'),
+    [Input('upload_data','filename')],
+    [State('upload_data', 'contents')]
+)
+def fetch_results_csv(filename,contents):
+    print("----------------TRIGGERED-----------------")
+    if contents is not None and filename is not None:
+        fileList = glob.glob(os.path.join(DATA_DIR, 'result*.csv'))
+        for f in fileList:
+            try:
+                os.remove(f)
+            except:
+                pass
+        i=0
+        refslist=[]
+        for fname,data in zip(filename,contents):
+            try:
+                df=parse_contents(data, fname)
+                if df==["GPU unavailable"]:
+                    return '😕 Sorry for the inconvenience. GPU unavailable. Try another time.'
+            except Exception as e:
+                return 'There was an error processing this file. Please provide a proper formatted file.'
+            df.to_csv(os.path.join(DATA_DIR,'result'+i+'.csv'),index=False,header=True)
+            location = "{}".format(urlquote(os.path.join(DATA_DIR,'result'+i+'.csv')))
+            i+=1
+            refslist.append(html.Li(html.A(fname, href=location)))
+    return refslist
+
+@app.callback(
+    Output('input_text_button','n_clicks'),
+    [Input('reset_button','n_clicks')]
+)
+def reset(clicks):
+    return 0
 
 
 if __name__ == '__main__':

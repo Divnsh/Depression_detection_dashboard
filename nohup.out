@@ -1,0 +1,25 @@
+2020-08-22 20:18:48.762256: I tensorflow_serving/model_servers/server.cc:87] Building single TensorFlow model file config:  model_name: roberta_dep model_base_path: gs://saved_models19082020/my_models
+2020-08-22 20:18:48.763339: I tensorflow_serving/model_servers/server_core.cc:464] Adding/updating models.
+2020-08-22 20:18:48.763371: I tensorflow_serving/model_servers/server_core.cc:575]  (Re-)adding model: roberta_dep
+2020-08-22 20:18:58.350349: I tensorflow_serving/core/basic_manager.cc:739] Successfully reserved resources to load servable {name: roberta_dep version: 1}
+2020-08-22 20:18:58.350392: I tensorflow_serving/core/loader_harness.cc:66] Approving load for servable version {name: roberta_dep version: 1}
+2020-08-22 20:18:58.350437: I tensorflow_serving/core/loader_harness.cc:74] Loading servable version {name: roberta_dep version: 1}
+2020-08-22 20:18:59.333282: I external/org_tensorflow/tensorflow/cc/saved_model/reader.cc:31] Reading SavedModel from: gs://saved_models19082020/my_models/1
+2020-08-22 20:19:04.346777: I external/org_tensorflow/tensorflow/cc/saved_model/reader.cc:54] Reading meta graph with tags { serve }
+2020-08-22 20:19:04.346856: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:234] Reading SavedModel debug info (if present) from: gs://saved_models19082020/my_models/1
+2020-08-22 20:19:05.137104: I external/org_tensorflow/tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2020-08-22 20:19:05.433064: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:199] Restoring SavedModel bundle.
+2020-08-22 20:29:58.705839: I tensorflow_serving/model_servers/server.cc:87] Building single TensorFlow model file config:  model_name: roberta_dep model_base_path: gs://saved_models19082020/my_models
+2020-08-22 20:29:58.706022: I tensorflow_serving/model_servers/server_core.cc:464] Adding/updating models.
+2020-08-22 20:29:58.706049: I tensorflow_serving/model_servers/server_core.cc:575]  (Re-)adding model: roberta_dep
+2020-08-22 20:30:07.560819: I tensorflow_serving/core/basic_manager.cc:739] Successfully reserved resources to load servable {name: roberta_dep version: 1}
+2020-08-22 20:30:07.560885: I tensorflow_serving/core/loader_harness.cc:66] Approving load for servable version {name: roberta_dep version: 1}
+2020-08-22 20:30:07.560933: I tensorflow_serving/core/loader_harness.cc:74] Loading servable version {name: roberta_dep version: 1}
+2020-08-22 20:30:08.669585: I external/org_tensorflow/tensorflow/cc/saved_model/reader.cc:31] Reading SavedModel from: gs://saved_models19082020/my_models/1
+2020-08-22 20:30:12.893562: I external/org_tensorflow/tensorflow/cc/saved_model/reader.cc:54] Reading meta graph with tags { serve }
+2020-08-22 20:30:12.893609: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:234] Reading SavedModel debug info (if present) from: gs://saved_models19082020/my_models/1
+2020-08-22 20:30:13.400223: I external/org_tensorflow/tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2020-08-22 20:30:13.662441: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:199] Restoring SavedModel bundle.
+2020-08-22 20:30:16.799085: W external/org_tensorflow/tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 154414080 exceeds 10% of free system memory.
