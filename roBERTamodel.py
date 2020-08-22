@@ -64,35 +64,33 @@ class Model:
 
     def get_prediction_bulk(self, data, batch_size=1):
         # assert os.path.exists(output_dir+'tf_model.h5') and os.path.exists(output_dir+'config.json'),"Trained model not found. Please train a model first!"
-        try:
-            inp_dict_list=[]
-            for post in data[colastext]:
-                tempdict={"input_ids": [], "attention_mask": []}
-                tokens = self.roberta_tokenizer.encode_plus(post,
-                                                            add_special_tokens=True,  # add [CLS], [SEP]
-                                                            max_length=max_length,
-                                                            padding='max_length',
-                                                            truncation=True,
-                                                            return_attention_mask=True,
-                                                            )
-                tempdict["input_ids"]=tokens['input_ids']
-                tempdict["attention_mask"]=tokens['attention_mask']
-                inp_dict_list.append(tempdict)
+        inp_dict_list=[]
+        for post in data[colastext]:
+            tempdict={"input_ids": [], "attention_mask": []}
+            tokens = self.roberta_tokenizer.encode_plus(post,
+                                                        add_special_tokens=True,  # add [CLS], [SEP]
+                                                        max_length=max_length,
+                                                        padding='max_length',
+                                                        truncation=True,
+                                                        return_attention_mask=True,
+                                                        )
+            tempdict["input_ids"]=tokens['input_ids']
+            tempdict["attention_mask"]=tokens['attention_mask']
+            inp_dict_list.append(tempdict)
 
-            # Making predictions from servable
-            data = json.dumps({"signature_name": "serving_default", "instances": inp_dict_list})
-            headers = {"content-type": "application/json"}
-            json_response = requests.get("http://localhost:8501/v1/models/roberta_dep")
-            json_response = requests.post('http://localhost:8501/v1/models/roberta_dep:predict',
-                                          data=data, headers=headers)
-            test_preds = json.loads(json_response.text)['predictions']
-            test_preds = softmax(test_preds)
-            preds = test_preds[:, 1]
-            data['prediction']=preds
-            return data[['idx',colastext,'prediction']]
-        except Exception as e:
-            print(e)
-            return ["GPU unavailable"]
+        # Making predictions from servable
+        jdata = json.dumps({"signature_name": "serving_default", "instances": inp_dict_list})
+        headers = {"content-type": "application/json"}
+        json_response = requests.get("http://localhost:8501/v1/models/roberta_dep")
+        json_response = requests.post('http://localhost:8501/v1/models/roberta_dep:predict',
+                                      data=jdata, headers=headers)
+        test_preds = json.loads(json_response.text)['predictions']
+        test_preds = softmax(test_preds)
+        preds = test_preds[:, 1]
+        data['prediction']=preds
+        return data[['idx',colastext,'prediction']]
+
+
 
 # Upload models folder to GCP
 def upload_local_directory_to_gcs(bucket, gcs_path, export_path):
@@ -109,11 +107,6 @@ def upload_local_directory_to_gcs(bucket, gcs_path, export_path):
             remote_path = os.path.join(gcs_path, local_file[1 + len(export_path):])
             blob = bucket.blob(remote_path)
             blob.upload_from_filename(export_path+"/"+os.path.basename(local_file))
-
-def deploy_tfserving():
-    # tensorflow serving deploy
-    os.system('bash servemodel.sh')
-    print("Model deployed using tensorflow-serving.")
 
 if __name__=='__main__':
     #mod_dir = '/tmp/model'

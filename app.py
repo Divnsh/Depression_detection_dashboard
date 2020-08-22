@@ -10,14 +10,12 @@ import pandas as pd
 #import pyldavis_dash
 import plotly.graph_objects as go
 from dash.dependencies import Input, Output, State
-from roBERTamodel import Model,deploy_tfserving
+from roBERTamodel import Model
 from more_exploration import format_topics_inputs
 import pickle
 import base64
 import io
-import datetime
-import dash_table
-from urllib.parse import quote as urlquote
+import flask
 import glob
 
 PLOTS_DIR='./Plots'
@@ -144,7 +142,6 @@ app.layout = html.Div(style={'background-image': 'url("/assets/stigma-depression
 
 ], className='twelve columns')
 
-deploy_tfserving()
 roberta=Model()
 
 @app.callback(
@@ -264,10 +261,29 @@ def parse_contents(contents, filename):
     elif 'xls' in filename or 'xlsx' in filename:
         df = pd.read_excel(io.BytesIO(decoded), names=['Text'])
     df['idx']=list(range(0,len(df)))
-    df1=Cleaning(df,0)
-    df1 = roberta.get_prediction_bulk(df1)
-    df1 = df1.merge(df,on='idx',how='right')
-    return df1
+    df1=df.copy()
+    df2=Cleaning(df,0)
+    df2 = roberta.get_prediction_bulk(df2)
+    df2 = df2.merge(df1,on='idx',how='right')
+    return df2
+
+@app.server.route('/dash/urlToDownload')
+def download_csv():
+    value = flask.request.args.get('value')
+    # create a dynamic csv or file here using `StringIO`
+    # (instead of writing to the file system)
+    df=pd.read_csv('./download/' + value)
+    str_io = io.StringIO()
+    df.to_csv(str_io,index=False)
+    mem = io.BytesIO()
+    mem.write(str_io.getvalue().encode('utf-8'))
+    mem.seek(0)
+    str_io.close()
+    return flask.send_file(mem,
+                           mimetype='text/csv',
+                           attachment_filename=value,
+                           as_attachment=True)
+
 
 @app.callback(
     Output('output_results', 'children'),
@@ -276,7 +292,7 @@ def parse_contents(contents, filename):
 )
 def fetch_results_csv(filename,contents):
     if contents is not None and filename is not None:
-        fileList = glob.glob(os.path.join(DATA_DIR, 'result*.csv'))
+        fileList = glob.glob('./download/result*.csv')
         for f in fileList:
             try:
                 os.remove(f)
@@ -287,13 +303,14 @@ def fetch_results_csv(filename,contents):
         for fname,data in zip(filename,contents):
             try:
                 df=parse_contents(data, fname)
-                print(df)
-                if df==["GPU unavailable"]:
-                    return '😕 Sorry for the inconvenience. GPU unavailable. Try another time.'
             except Exception as e:
-                return 'There was an error processing this file. Please provide a proper formatted file.'
-            df.to_csv(os.path.join(DATA_DIR,'result'+i+'.csv'),index=False,header=True)
-            location = "{}".format(urlquote(os.path.join(DATA_DIR,'result'+i+'.csv')))
+                print(e)
+                return 'There was an error processing this file. Please provide a proper formatted file.\
+                        / GPU unavailable. Try another time.'
+            #print("Saving..")
+            df.to_csv('./download/result'+str(i)+'.csv',index=False,header=True)
+            #print("saved")
+            location = '/dash/urlToDownload?value={}'.format('result'+str(i)+'.csv')
             i+=1
             refslist.append(html.Li(html.A(fname, href=location)))
     return refslist
