@@ -23,3 +23,10 @@ To enable them in other operations, rebuild TensorFlow with the appropriate comp
 To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
 2020-08-22 20:30:13.662441: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:199] Restoring SavedModel bundle.
 2020-08-22 20:30:16.799085: W external/org_tensorflow/tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 154414080 exceeds 10% of free system memory.
+2020-08-22 20:43:13.143251: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:183] Running initialization op on SavedModel bundle at path: gs://saved_models19082020/my_models/1
+2020-08-22 20:43:13.498299: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:303] SavedModel load for tags { serve }; Status: success: OK. Took 784828713 microseconds.
+2020-08-22 20:43:14.179261: I tensorflow_serving/servables/tensorflow/saved_model_warmup_util.cc:59] No warmup data file found at gs://saved_models19082020/my_models/1/assets.extra/tf_serving_warmup_requests
+2020-08-22 20:43:24.602913: I tensorflow_serving/core/loader_harness.cc:87] Successfully loaded servable version {name: roberta_dep version: 1}
+2020-08-22 20:43:24.644439: I tensorflow_serving/model_servers/server.cc:367] Running gRPC ModelServer at 0.0.0.0:8500 ...
+[evhttp_server.cc : 238] NET_LOG: Entering the event loop ...
+2020-08-22 20:43:24.650413: I tensorflow_serving/model_servers/server.cc:387] Exporting HTTP/REST API at:localhost:8501 ...

@@ -15,8 +15,8 @@ Total number of non-depression posts = 817173
 
 *Model-*
 
-I have fine tuned the pretrained tensorflow roBERTa sequence classification model from huggingface library to train on the data.
-2 to 3 epochs is enough to gain accuracy of 97-98% in validation and test sets. Beyond that, the accuracy falls due to loss of generalization.
+I have fine tuned the pretrained tensorflow roBERTa sequence classification model from huggingface library on the train data.
+2 to 3 epochs is enough to gain an accuracy of 97-98% in validation and test sets. Beyond that, the accuracy falls due to loss of generalization.
 Baseline methods like XGboost, passiveAggressive classifier give a validation,test set accuracy of 75-87%.
 
 *Topic Modelling-*
