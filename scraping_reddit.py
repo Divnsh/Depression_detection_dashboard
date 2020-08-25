@@ -23,9 +23,9 @@ if not os.path.exists(DATA_DIR):
     os.mkdir(DATA_DIR)
 
 # Initialize scraper
-reddit = praw.Reddit(client_id ='kubhdgi6Cy5vaQ',
-                     client_secret ='h28n4Gvh3Ksgzhpk6QMc8c6_u3w',
-                     user_agent ='redscrape')
+reddit = praw.Reddit(client_id ='',
+                     client_secret ='',
+                     user_agent ='')
 
 print(reddit.read_only) # check if read only instance
 
