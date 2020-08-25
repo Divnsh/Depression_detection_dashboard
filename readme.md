@@ -1,6 +1,6 @@
 # Depression_detection_dashboard
 **Dashboard for depression detection through text.**
-Deployed on Heroku: https://depression-check.herokuapp.com/
+Deployed on EC2 server: http://13.233.89.242:8000
 
 ![Depression-check](/assets/Screenshot.png)
 
