@@ -1,6 +1,6 @@
 # Depression_detection_dashboard
 **Dashboard for depression detection through text.**
-Deployed on EC2 server: http://13.233.89.242:8000
+Deployed on: http://192.168.0.105:8000/
 
 ![Depression-check](/assets/Screenshot.png)
 
