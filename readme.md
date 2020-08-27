@@ -4,6 +4,9 @@ Deployed on: http://192.168.0.105:8000/
 
 ![Depression-check](/assets/Screenshot.png)
 
+This depression detection app takes input as a text entered into the dialog box, or a single-column text csv file, and predicts whether the text indicates depression or not.
+For the text entered into the dialog box, top 3 latent topics in the text are extracted through Latent Dirichlet Allocation (fitted on train data).
+
 *Data used to train the model-*
 
 As exclusive text data for a depression classification task was not readily available, I assembled a custom dataset from reddit posts and comments.
