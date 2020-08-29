@@ -1,6 +1,6 @@
 # Depression_detection_dashboard
 **Dashboard for depression detection through text.**
-Deployed on: http://192.168.0.105:8000/
+Deployed on: http://depdash.divyansh-ds.pw/
 
 ![Depression-check](/assets/Screenshot.png)
 
